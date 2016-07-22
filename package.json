@@ -4,6 +4,8 @@
   "description": "It is a simple telegram bot based on NodeJS",
   "main": "index.js",
   "scripts": {
+    "prestart": "npm install",
+    "start": "node index.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -23,6 +25,7 @@
   },
   "homepage": "https://github.com/new9uy/telegram-bot#readme",
   "dependencies": {
-    "node-telegram-bot-api": "^0.23.3"
+    "node-telegram-bot-api": "^0.23.3",
+    "request": "^2.73.0"
   }
 }
