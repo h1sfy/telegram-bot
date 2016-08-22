@@ -27,6 +27,32 @@ bot.on('text', function(msg)
     console.log(msg);
 });
 
+//Checking Privatbank balance 
+bot.on('text', function(msg)
+{
+    var messageChatId = msg.chat.id;
+    var messageText = msg.text;
+    var messageDate = msg.date;
+    var messageUsr = msg.from.username;
+
+    if (messageText === '/bal') {
+        var http = new XMLHttpRequest();
+        var url = "https://api.privatbank.ua/p24api/balance";
+        var params = '<?xml version="1.0" encoding="UTF-8"?><request version="1.0"><merchant><id>121153</id><signature>cca3e82dab117b7475f0f5df64411760cb4945e1</signature></merchant><data><oper>cmt</oper><wait>0</wait><test>0</test><payment id=""><prop name="cardnum" value="4149497859710842" /><prop name="country" value="UA" /></payment></data></request>';
+        http.open("POST", url, true);
+        http.onreadystatechange = function() {//Call a function when the state changes.
+            if(http.readyState == 4 && http.status == 200) {
+                alert(http.responseText);
+            }
+        }
+        http.send(params);
+        sendMessageByBot(messageChatId, http.responseText);
+    }
+
+    console.log(msg);
+});
+
+
 function sendMessageByBot(aChatId, aMessage)
 {
     bot.sendMessage(aChatId, aMessage, { caption: 'I\'m a cute bot!' });
