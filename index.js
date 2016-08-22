@@ -1,5 +1,6 @@
 var TelegramBot = require('node-telegram-bot-api');
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
+var xml2js = require('xml2js');
 
 var token = '247186133:AAEXYHUcM1L9MHxhyRMpTo8ggTe8c3piTI8';
 var botOptions = {
@@ -47,7 +48,13 @@ bot.on('text', function(msg)
                 console.log(http.responseText);
             }
         }
-        sendMessageByBot(messageChatId, http.responseText);
+        var balance = "";
+        var parser = new xml2js.Parser({explicitArray : false});
+        parser.parseString(http.responseText, function (err, result) {
+            balance = result["response"]["data"]["info"]["cardbalance"]["balance"];
+        });
+        sendMessageByBot(messageChatId, "На карте " + balance + " грн");
+        console.log(balance);
     }
 
     console.log(msg);
