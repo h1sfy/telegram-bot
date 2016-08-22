@@ -1,4 +1,5 @@
 var TelegramBot = require('node-telegram-bot-api');
+var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 
 var token = '247186133:AAEXYHUcM1L9MHxhyRMpTo8ggTe8c3piTI8';
 var botOptions = {
@@ -38,14 +39,14 @@ bot.on('text', function(msg)
     if (messageText === '/bal') {
         var http = new XMLHttpRequest();
         var url = "https://api.privatbank.ua/p24api/balance";
-        var params = '<?xml version="1.0" encoding="UTF-8"?><request version="1.0"><merchant><id>121153</id><signature>cca3e82dab117b7475f0f5df64411760cb4945e1</signature></merchant><data><oper>cmt</oper><wait>0</wait><test>0</test><payment id=""><prop name="cardnum" value="4149497859710842" /><prop name="country" value="UA" /></payment></data></request>';
-        http.open("POST", url, true);
+        var body = '<?xml version="1.0" encoding="UTF-8"?><request version="1.0"><merchant><id>121153</id><signature>cca3e82dab117b7475f0f5df64411760cb4945e1</signature></merchant><data><oper>cmt</oper><wait>0</wait><test>0</test><payment id=""><prop name="cardnum" value="4149497859710842" /><prop name="country" value="UA" /></payment></data></request>';
+        http.open("POST", url, false);
+        http.send(body);
         http.onreadystatechange = function() {//Call a function when the state changes.
             if(http.readyState == 4 && http.status == 200) {
-                alert(http.responseText);
+                console.log(http.responseText);
             }
         }
-        http.send(params);
         sendMessageByBot(messageChatId, http.responseText);
     }
 
